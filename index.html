@@ -9,15 +9,82 @@
         margin: 0;
         overflow: hidden;
         background: #ffb6c1;
+        font-family: 'Arial', sans-serif;
+      }
+      
+      #message-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        max-width: 500px;
+        text-align: center;
+        z-index: 100;
+        display: none;
+      }
+      
+      #message-box h2 {
+        color: #ff1493;
+        margin-bottom: 20px;
+      }
+      
+      #message-box p {
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+      
+      #close-btn {
+        background: #ff1493;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+      
+      #close-btn:hover {
+        background: #ff69b4;
+        transform: scale(1.05);
+      }
+      
+      #music-control {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 10px;
+        border-radius: 50px;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <audio id="bgm" src="lagucici.mp3" autoplay loop></audio>
+    <audio id="bgm" src="lagucici.mp3" loop></audio>
+    
+    <div id="message-box">
+      <h2>Untuk Cici My Animeeeee 💖</h2>
+      <p>Setiap hari bersamamu adalah berkah terindah dalam hidupku. Kamu membuat dunia lebih cerah dengan kehadiranmu.</p>
+      <p>Aku mungkin tidak sempurna, tapi cintaku padamu sangat nyata. Aku berjanji akan selalu membuatmu bahagia dan menjadi yang terbaik untukmu.</p>
+      <p>I love you more than words can express.</p>
+      <button id="close-btn">Tutup</button>
+    </div>
+    
+    <div id="music-control" title="Putar/Mute Musik">🎵</div>
 
     <script>
       let hearts = [];
       let bgImage;
+      let showMessage = false;
+      let musicPlaying = false;
+      let bgm;
 
       function preload() {
         bgImage = loadImage("cici.jpg");
@@ -27,7 +94,10 @@
         createCanvas(windowWidth, windowHeight, WEBGL);
         textAlign(CENTER, CENTER);
         frameRate(60);
-
+        
+        bgm = document.getElementById('bgm');
+        
+        // Buat 40 hati dengan posisi acak
         for (let i = 0; i < 40; i++) {
           hearts.push({
             x: random(-width / 2, width / 2),
@@ -35,21 +105,40 @@
             size: random(50, 100),
             speed: random(1, 2),
             angle: random(TWO_PI),
-            pulse: random(0.8, 1.2)
+            pulse: random(0.8, 1.2),
+            color: color(random(200, 255), random(100, 150), random(150, 200))
           });
         }
+        
+        // Setup tombol pesan
+        document.getElementById('close-btn').addEventListener('click', function() {
+          document.getElementById('message-box').style.display = 'none';
+        });
+        
+        // Setup kontrol musik
+        document.getElementById('music-control').addEventListener('click', function() {
+          if (musicPlaying) {
+            bgm.pause();
+            musicPlaying = false;
+            this.innerHTML = '🔇';
+          } else {
+            bgm.play();
+            musicPlaying = true;
+            this.innerHTML = '🎵';
+          }
+        });
       }
 
-      function drawHeart(x, y, s, a) {
+      function drawHeart(x, y, s, a, col) {
         push();
         translate(x, y);
         rotate(a);
         scale(s);
-
-        texture(bgImage);
+        
+        fill(col);
         noStroke();
         beginShape();
-        vertex(0, -20, 0.5, 0);
+        vertex(0, -20);
         bezierVertex(-20, -50, -50, -10, 0, 30);
         bezierVertex(50, -10, 20, -50, 0, -20);
         endShape(CLOSE);
@@ -58,9 +147,10 @@
 
       function draw() {
         background(255, 182, 193);
-
+        
+        // Gambar semua hati
         for (let h of hearts) {
-          drawHeart(h.x, h.y, (h.size / 50) * sin(frameCount * 0.05) * h.pulse, h.angle);
+          drawHeart(h.x, h.y, (h.size / 50) * sin(frameCount * 0.05) * h.pulse, h.angle, h.color);
           h.y += h.speed;
           h.angle += 0.01;
           if (h.y > height / 2 + 50) {
@@ -73,12 +163,36 @@
         fill(255);
         stroke(255, 0, 102);
         strokeWeight(4);
-        textSize(64);
+        textSize(min(64, width/10));
         text("I ❤️ U Cici!", 0, -height / 2 + 100);
 
-        textSize(32);
+        textSize(min(32, width/20));
         noStroke();
+        fill(255);
         text("Kamu yang paling aku sayang selamanya 💖", 0, height / 2 - 60);
+        
+        // Tombol pesan
+        if (!showMessage) {
+          fill(255, 255, 255, 200);
+          noStroke();
+          ellipse(width/2 - 100, height/2 - 100, 60, 60);
+          fill(255, 0, 102);
+          textSize(20);
+          text("💌", width/2 - 100, height/2 - 100);
+        }
+      }
+      
+      function mousePressed() {
+        // Cek jika tombol pesan diklik
+        let d = dist(mouseX - width/2, mouseY - height/2, -100, -100);
+        if (d < 30) {
+          document.getElementById('message-box').style.display = 'block';
+          showMessage = true;
+        }
+      }
+      
+      function windowResized() {
+        resizeCanvas(windowWidth, windowHeight);
       }
     </script>
   </body>
