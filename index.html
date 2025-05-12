@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>I Love Cici</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+  </head>
+  <body>
+    <script>
+      let bgColors = ['#ffe6ea', '#ffb6c1', '#ff69b4', '#ff1493', '#db7093'];
+      let hearts = [];
+
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        textAlign(CENTER, CENTER);
+        frameRate(30);
+        for (let i = 0; i < 30; i++) {
+          hearts.push({
+            x: random(width),
+            y: random(height),
+            size: random(10, 30),
+            speed: random(1, 3)
+          });
+        }
+      }
+
+      function drawHeart(x, y, s) {
+        push();
+        translate(x, y);
+        scale(s);
+        beginShape();
+        fill('red');
+        noStroke();
+        vertex(0, -20);
+        bezierVertex(-25, -50, -50, -10, 0, 30);
+        bezierVertex(50, -10, 25, -50, 0, -20);
+        endShape(CLOSE);
+        pop();
+      }
+
+      function draw() {
+        background(bgColors[frameCount % bgColors.length]);
+
+        for (let h of hearts) {
+          drawHeart(h.x, h.y, h.size / 50);
+          h.y += h.speed;
+          if (h.y > height) {
+            h.y = -20;
+            h.x = random(width);
+          }
+        }
+
+        textSize(64);
+        fill(255);
+        text("I ❤️ U", width / 2, height / 2 - 40);
+
+        textSize(32);
+        text("I Love Cici", width / 2, height / 2 + 50);
+      }
+    </script>
+  </body>
+</html>
