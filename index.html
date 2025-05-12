@@ -1,199 +1,423 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>I Love Cici ❤️</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love Cici</title>
     <style>
-      body {
-        margin: 0;
-        overflow: hidden;
-        background: #ffb6c1;
-        font-family: 'Arial', sans-serif;
-      }
-      
-      #message-box {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(255, 255, 255, 0.8);
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        max-width: 500px;
-        text-align: center;
-        z-index: 100;
-        display: none;
-      }
-      
-      #message-box h2 {
-        color: #ff1493;
-        margin-bottom: 20px;
-      }
-      
-      #message-box p {
-        color: #333;
-        line-height: 1.6;
-        margin-bottom: 20px;
-      }
-      
-      #close-btn {
-        background: #ff1493;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 50px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: all 0.3s;
-      }
-      
-      #close-btn:hover {
-        background: #ff69b4;
-        transform: scale(1.05);
-      }
-      
-      #music-control {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        z-index: 100;
-        background: rgba(255, 255, 255, 0.7);
-        padding: 10px;
-        border-radius: 50px;
-        cursor: pointer;
-      }
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff0f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #ff69b4;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .heart-animation {
+            position: fixed;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff69b4;
+            opacity: 0;
+            animation: float 10s linear infinite;
+        }
+        
+        main {
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .photo-container {
+            max-width: 800px;
+            margin: 40px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .photo {
+            width: 100%;
+            height: 400px;
+            background-color: #ffd1dc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .photo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .photo-placeholder {
+            font-size: 2rem;
+            color: #ff69b4;
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .message {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .message h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 20px;
+        }
+        
+        .message p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .reasons {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .reasons h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 30px;
+        }
+        
+        .reason-item {
+            margin-bottom: 30px;
+            text-align: left;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .reason-item:before {
+            content: "❤";
+            position: absolute;
+            left: 0;
+            color: #ff69b4;
+        }
+        
+        .memory-gallery {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .memory-gallery h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 30px;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            background-color: #ffd1dc;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ff69b4;
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background-color: #ff69b4;
+            color: white;
+            margin-top: 60px;
+        }
+        
+        footer p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+        }
+        
+        .heart-beat {
+            display: inline-block;
+            animation: heartbeat 1s infinite;
+            transform-origin: center;
+        }
+        
+        /* Music Player Styles */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 50px;
+            padding: 10px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .music-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ff69b4;
+            margin: 0 5px;
+        }
+        
+        .music-info {
+            font-size: 14px;
+            margin-left: 10px;
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.5s ease;
+        }
+        
+        .music-player:hover .music-info {
+            max-width: 200px;
+        }
+        
+        .volume-control {
+            width: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .music-player:hover .volume-control {
+            width: 100px;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-800px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
     </style>
-  </head>
-  <body>
-    <audio id="bgm" src="lagucici.mp3" loop></audio>
+</head>
+<body>
+    <div class="heart-animation" id="heartContainer"></div>
     
-    <div id="message-box">
-      <h2>Untuk Cici My Animeeeee 💖</h2>
-      <p>Setiap hari bersamamu adalah berkah terindah dalam hidupku. Kamu membuat dunia lebih cerah dengan kehadiranmu.</p>
-      <p>Aku mungkin tidak sempurna, tapi cintaku padamu sangat nyata. Aku berjanji akan selalu membuatmu bahagia dan menjadi yang terbaik untukmu.</p>
-      <p>I love you more than words can express.</p>
-      <button id="close-btn">Tutup</button>
+    <!-- Music Player -->
+    <div class="music-player">
+        <button class="music-btn" id="playBtn">▶️</button>
+        <div class="music-info">Lagu Untuk Cici</div>
+        <div class="volume-control">
+            <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="0.7">
+        </div>
     </div>
     
-    <div id="music-control" title="Putar/Mute Musik">🎵</div>
-
+    <header>
+        <div class="container">
+            <h1>I Love You, Cici</h1>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="photo-container">
+                <div class="photo">
+                    <img src="cici.jpg" alt="You and Me">
+                </div>
+            </div>
+            
+            <div class="message">
+                <h2>To My Beloved Cici</h2>
+                <p>Since the day you came into my life, everything has changed. Your smile brightens my darkest days, and your laughter is the sweetest melody I've ever heard. Every moment with you is a treasure that I hold dear to my heart.</p>
+                <p>You're not just my partner, but my best friend, my confidant, and my inspiration. Your kindness, intelligence, and beauty never cease to amaze me. I'm so grateful that our paths crossed and that I get to share this journey with you.</p>
+                <p>I promise to love you more each day, to support your dreams, and to be there for you through all of life's ups and downs.</p>
+            </div>
+            
+            <div class="reasons">
+                <h2>Reasons Why I Love You</h2>
+                <div class="reason-item">
+                    <h3>Your Beautiful Smile</h3>
+                    <p>The way your eyes light up when you smile makes my heart skip a beat every single time.</p>
+                </div>
+                <div class="reason-item">
+                    <h3>Your Kindness</h3>
+                    <p>Your compassion towards others shows the beautiful soul that you are.</p>
+                </div>
+                <div class="reason-item">
+                    <h3>Your Intelligence</h3>
+                    <p>I'm constantly in awe of your wisdom and the way you see the world.</p>
+                </div>
+                <div class="reason-item">
+                    <h3>Your Strength</h3>
+                    <p>You face challenges with courage and grace that inspires me every day.</p>
+                </div>
+                <div class="reason-item">
+                    <h3>Your Love</h3>
+                    <p>The way you love me makes me feel like the luckiest person in the world.</p>
+                </div>
+            </div>
+            
+            <div class="memory-gallery">
+                <h2>Our Special Moments</h2>
+                <div class="gallery">
+                    <div class="gallery-item">First Date</div>
+                    <div class="gallery-item">Beach Trip</div>
+                    <div class="gallery-item">Birthday Celebration</div>
+                    <div class="gallery-item">Stargazing Night</div>
+                    <div class="gallery-item">Cooking Together</div>
+                    <div class="gallery-item">Dance in the Rain</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>My heart is yours, now and forever <span class="heart-beat">❤</span></p>
+        </div>
+    </footer>
+    
+    <audio id="bgMusic" loop>
+        <source src="lagucici.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
     <script>
-      let hearts = [];
-      let bgImage;
-      let showMessage = false;
-      let musicPlaying = false;
-      let bgm;
-
-      function preload() {
-        bgImage = loadImage("cici.jpg");
-      }
-
-      function setup() {
-        createCanvas(windowWidth, windowHeight, WEBGL);
-        textAlign(CENTER, CENTER);
-        frameRate(60);
-        
-        bgm = document.getElementById('bgm');
-        
-        // Buat 40 hati dengan posisi acak
-        for (let i = 0; i < 40; i++) {
-          hearts.push({
-            x: random(-width / 2, width / 2),
-            y: random(-height / 2, height / 2),
-            size: random(50, 100),
-            speed: random(1, 2),
-            angle: random(TWO_PI),
-            pulse: random(0.8, 1.2),
-            color: color(random(200, 255), random(100, 150), random(150, 200))
-          });
+        // Create floating hearts in the background
+        function createHearts() {
+            const container = document.getElementById('heartContainer');
+            const heartSymbols = ['❤', '♥', '💕', '💖', '💗'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.opacity = '0';
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 20000);
+            }, 500);
         }
         
-        // Setup tombol pesan
-        document.getElementById('close-btn').addEventListener('click', function() {
-          document.getElementById('message-box').style.display = 'none';
+        // Music Player Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('bgMusic');
+            const playBtn = document.getElementById('playBtn');
+            const volumeControl = document.getElementById('volumeControl');
+            
+            // Set initial volume
+            audio.volume = volumeControl.value;
+            
+            // Play/Pause button
+            playBtn.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.textContent = '⏸️';
+                } else {
+                    audio.pause();
+                    playBtn.textContent = '▶️';
+                }
+            });
+            
+            // Volume control
+            volumeControl.addEventListener('input', function() {
+                audio.volume = this.value;
+            });
+            
+            // Auto play music (with user interaction)
+            document.body.addEventListener('click', function initAudio() {
+                // Try to play audio (will work only after user interaction)
+                audio.play().then(() => {
+                    playBtn.textContent = '⏸️';
+                }).catch(error => {
+                    console.log('Auto-play was prevented:', error);
+                });
+                // Remove this event listener after first interaction
+                document.body.removeEventListener('click', initAudio);
+            }, { once: true });
         });
         
-        // Setup kontrol musik
-        document.getElementById('music-control').addEventListener('click', function() {
-          if (musicPlaying) {
-            bgm.pause();
-            musicPlaying = false;
-            this.innerHTML = '🔇';
-          } else {
-            bgm.play();
-            musicPlaying = true;
-            this.innerHTML = '🎵';
-          }
-        });
-      }
-
-      function drawHeart(x, y, s, a, col) {
-        push();
-        translate(x, y);
-        rotate(a);
-        scale(s);
-        
-        fill(col);
-        noStroke();
-        beginShape();
-        vertex(0, -20);
-        bezierVertex(-20, -50, -50, -10, 0, 30);
-        bezierVertex(50, -10, 20, -50, 0, -20);
-        endShape(CLOSE);
-        pop();
-      }
-
-      function draw() {
-        background(255, 182, 193);
-        
-        // Gambar semua hati
-        for (let h of hearts) {
-          drawHeart(h.x, h.y, (h.size / 50) * sin(frameCount * 0.05) * h.pulse, h.angle, h.color);
-          h.y += h.speed;
-          h.angle += 0.01;
-          if (h.y > height / 2 + 50) {
-            h.y = -height / 2 - 50;
-            h.x = random(-width / 2, width / 2);
-          }
-        }
-
-        // Teks utama
-        fill(255);
-        stroke(255, 0, 102);
-        strokeWeight(4);
-        textSize(min(64, width/10));
-        text("I ❤️ U Cici!", 0, -height / 2 + 100);
-
-        textSize(min(32, width/20));
-        noStroke();
-        fill(255);
-        text("Kamu yang paling aku sayang selamanya 💖", 0, height / 2 - 60);
-        
-        // Tombol pesan
-        if (!showMessage) {
-          fill(255, 255, 255, 200);
-          noStroke();
-          ellipse(width/2 - 100, height/2 - 100, 60, 60);
-          fill(255, 0, 102);
-          textSize(20);
-          text("💌", width/2 - 100, height/2 - 100);
-        }
-      }
-      
-      function mousePressed() {
-        // Cek jika tombol pesan diklik
-        let d = dist(mouseX - width/2, mouseY - height/2, -100, -100);
-        if (d < 30) {
-          document.getElementById('message-box').style.display = 'block';
-          showMessage = true;
-        }
-      }
-      
-      function windowResized() {
-        resizeCanvas(windowWidth, windowHeight);
-      }
+        window.addEventListener('load', createHearts);
     </script>
-  </body>
+</body>
 </html>
